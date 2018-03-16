@@ -6,10 +6,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +20,6 @@ import java.util.ArrayList;
 
 public class MainAct extends AppCompatActivity {
     private final int QUESTIONCOUNT = 5;
-    private ArrayList<Question> totalQuestionList;
-    private ArrayList<Question> quizQuestionList;
-    private int score = 0;
-    private int qCount = 0;
-    private Question currentQuestion;
     ImageView img;
     TextView qHeader;
     Button a1Button;
@@ -29,6 +27,11 @@ public class MainAct extends AppCompatActivity {
     Button a3Button;
     Button a4Button;
     TextView scoreView;
+    private ArrayList<Question> totalQuestionList;
+    private ArrayList<Question> quizQuestionList;
+    private int score = 0;
+    private int qCount = 0;
+    private Question currentQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +62,15 @@ public class MainAct extends AppCompatActivity {
     }
 
     private void extraQuestions() {
-        //#TODO FIX THIS LAYOUT MESS
+
+        //create int margin with value = 8;
+        int marginValue = 8;
+        float d = getResources().getDisplayMetrics().density;
+        int margin = (int) (marginValue * d);
+
         //local variable masterLayout;
         LinearLayout masterLayout = (LinearLayout) img.getParent();
+        masterLayout.setPadding(margin, margin, margin, margin);
 
         //replace qHeader text
         qHeader.setText(getResources().getString(R.string.extra_questions));
@@ -71,29 +80,39 @@ public class MainAct extends AppCompatActivity {
         masterLayout.removeView(findViewById(R.id.answerView));
         masterLayout.removeView(findViewById(R.id.scoreText));
 
-        //create int margin with value = 16dp
-        int marginValue = 8;
-        float d = getResources().getDisplayMetrics().density;
-        int margin = (int) (marginValue*d) ;
-
         //create ScrollView id questionScroll containing the 3 questions
         NestedScrollView scrollView = new NestedScrollView(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 8);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 8);
         scrollView.setFillViewport(true);
-        masterLayout.addView(scrollView,lp);
+        masterLayout.addView(scrollView, lp);
 
-       //create parent Layout for questions
+        //create parent Layout for questions
         LinearLayout parentLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         parentLayout.setOrientation(LinearLayout.VERTICAL);
-        scrollView.addView(parentLayout, rlp);
+        parentLayout.setPadding(margin,0,margin,0);
+        scrollView.addView(parentLayout, lp);
 
         //create LinearLayout for question 1
         LinearLayout newLayout = new LinearLayout(this);
-        rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.setOrientation(LinearLayout.VERTICAL);
         newLayout.setId(R.id.q1Layout);
-        rlp.setMargins(margin,margin,margin,0);
-        newLayout.setLayoutParams(rlp);
+        newLayout.setLayoutParams(lp);
+
+        //add TextView with question
+        TextView q1 = new TextView(this);
+        q1.setTextSize(getResources().getDimension(R.dimen.questionSize));
+        q1.setText(R.string.extraQ1);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.addView(q1, lp);
+
+        //add EditText with answer
+        EditText a1 = new EditText(this);
+        a1.setId(R.id.extraA1);
+        a1.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        a1.setHint(R.string.answerHint);
+        newLayout.addView(a1, lp);
 
         //add layout to masterLayout
         parentLayout.addView(newLayout);
@@ -101,28 +120,108 @@ public class MainAct extends AppCompatActivity {
         //update newLayout for question 2, reuse lp
         newLayout = new LinearLayout(this);
         newLayout.setId(R.id.q2Layout);
-        rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1);
-        rlp.setMargins(margin, 0,margin,0);
-        newLayout.setLayoutParams(rlp);
-        //add layout to masterLayout
-        parentLayout.addView(newLayout,rlp);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.setPadding(0,margin,0,0);
+        newLayout.setOrientation(LinearLayout.VERTICAL);
+        newLayout.setLayoutParams(lp);
+        parentLayout.addView(newLayout);
+
+        //add TextView with question
+        TextView q2 = new TextView(this);
+        q2.setTextSize(getResources().getDimension(R.dimen.questionSize));
+        q2.setText(R.string.extraQ2);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.addView(q2, lp);
+
+        //add RadioGroup
+        RadioGroup radioGroup = new RadioGroup(this);
+        RadioGroup.LayoutParams radioParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+        radioGroup.setPadding(0,margin/2,0,0);
+        newLayout.addView(radioGroup, radioParams);
+
+        //add button 1
+        RadioButton newButton = new RadioButton(this);
+        newButton.setId(R.id.extraA2B1);
+        newButton.setText(getResources().getString(R.string.extra_notThis));
+        newButton.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        radioGroup.addView(newButton, lp);
+
+        //add button 2
+        newButton = new RadioButton(this);
+        newButton.setId(R.id.extraA2B2);
+        newButton.setText(getResources().getString(R.string.extra_notThis));
+        newButton.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        radioGroup.addView(newButton, lp);
+
+        //add button 3
+        newButton = new RadioButton(this);
+        newButton.setId(R.id.extraA2B3);
+        newButton.setText(getResources().getString(R.string.extra_thisOne));
+        newButton.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        radioGroup.addView(newButton, lp);
+
+        //add button 4
+        newButton = new RadioButton(this);
+        newButton.setId(R.id.extraA2B4);
+        newButton.setText(getResources().getString(R.string.extra_notThis));
+        newButton.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+          radioGroup.addView(newButton, lp);
 
         //update newLayout for question 3
         newLayout = new LinearLayout(this);
         newLayout.setId(R.id.q3Layout);
-        rlp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1);
-        rlp.setMargins(margin,margin, 0,margin*2);
-        newLayout.setLayoutParams(rlp);
+        newLayout.setPadding(0,margin,0,0);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //lp.setMargins(0,margin,0,0);
+        newLayout.setOrientation(LinearLayout.VERTICAL);
+        newLayout.setLayoutParams(lp);
+
+        //create TextView with 3rd question
+        TextView q3 = new TextView(this);
+        q3.setText(getResources().getString(R.string.extraQ3));
+        q3.setTextSize(getResources().getDimension(R.dimen.questionSize));
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        newLayout.addView(q3);
+
+        //add checkbox 1
+        CheckBox answer = new CheckBox(this);
+        answer.setPadding(0,margin/2,0,0);
+        answer.setId(R.id.extraA3B1);
+        answer.setText(getResources().getString(R.string.extra_thisOne));
+        answer.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        newLayout.addView(answer);
+
+        //add checkbox 2
+        answer = new CheckBox(this);
+        answer.setId(R.id.extraA3B2);
+        answer.setText(getResources().getString(R.string.extra_thisOne));
+        answer.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        newLayout.addView(answer);
+
+        //add checkbox 3
+        answer = new CheckBox(this);
+        answer.setId(R.id.extraA3B3);
+        answer.setText(getResources().getString(R.string.extra_thisOne));
+        answer.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        newLayout.addView(answer);
+
+        answer = new CheckBox(this);
+        answer.setId(R.id.extraA3B4);
+        answer.setText(getResources().getString(R.string.extra_andThisOne));
+        answer.setTextSize(getResources().getDimension(R.dimen.answerSize));
+        newLayout.addView(answer);
 
         //add layout to masterLayout
-        parentLayout.addView(newLayout,rlp);
-
-        //#TODO add extra question data to views
+        parentLayout.addView(newLayout, lp);
 
         //create Button to submit answers (added to masterLayout)
         Button submitButton = new Button(this);
         submitButton.setId(R.id.submitButton);
-        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,1);
+        lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1);
 
         submitButton.setText(getResources().getString(R.string.submit_button));
         submitButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
@@ -134,93 +233,94 @@ public class MainAct extends AppCompatActivity {
         });
 
         masterLayout.addView(submitButton, lp);
+
+        //#TODO add extra question data to views
+
+    }
+
+    private void checkButton(View v) {
+
     }
 
     private void submitAnswers() {
         //#TODO add code to check & submit answers
-    };
+    }
 
     private void endgame() {
-        //#TODO FIX THIS LAYOUT MESS
         //convert padding pixels to dp
         int paddingValue = 16;
         float d = getResources().getDisplayMetrics().density;
-        int padding = (int) (paddingValue*d);
+        int padding = (int) (paddingValue * d);
 
         //Clear answerButton Layout,
         LinearLayout layout = findViewById(R.id.answerView);
         layout.removeAllViewsInLayout();
+        layout.setPadding(padding, padding, padding, padding);
+
 
         //add Scrollview and LinearLayout child
-        ScrollView scrollView = new ScrollView(this);
-        ScrollView.LayoutParams scrollParams = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,ScrollView.LayoutParams.WRAP_CONTENT);
+        NestedScrollView scrollView = new NestedScrollView(this);
+        NestedScrollView.LayoutParams scrollParams = new NestedScrollView.LayoutParams(NestedScrollView.LayoutParams.MATCH_PARENT, NestedScrollView.LayoutParams.MATCH_PARENT);
+        scrollView.setFillViewport(true);
         scrollView.setLayoutParams(scrollParams);
         layout.addView(scrollView);
 
-        RelativeLayout buttonView = new RelativeLayout(this);
+        LinearLayout buttonView = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(padding,padding,padding,padding);
+        buttonView.setOrientation(LinearLayout.VERTICAL);
         buttonView.setLayoutParams(lp);
         scrollView.addView(buttonView);
 
         //add 'play again' button
         Button againButton = new Button(this);
         againButton.setText(getResources().getString(R.string.play_again));
-        againButton.setId(R.id.againButton);
-        lp =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        
+        lp = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         againButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         againButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent i = getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
         });
-        buttonView.addView(againButton, lp);
+        buttonView.addView(againButton, 0, lp);
 
         //add 'quit app' button
         Button endButton = new Button(this);
         endButton.setText(getResources().getString(R.string.exit_app));
-        endButton.setId(R.id.quitButton);
-        lp =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, padding ,0,0);
+        lp.setMargins(0, padding, 0, 0);
         endButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         endButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 finish();
             }
         });
-        buttonView.addView(endButton, lp);
+        buttonView.addView(endButton, 1, lp);
 
         //add 'extra questions' button
         Button extraButton = new Button(this);
         extraButton.setText(getResources().getString(R.string.extra_button));
-        extraButton.setId(R.id.extraButton);
         extraButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         extraButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 extraQuestions();
             }
         });
-        //reuse lp from endbutton
-        buttonView.addView(extraButton, lp);
-
-
         extraButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         extraButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 extraQuestions();
-            };
+            }
         });
 
-        switch(score) {
-            case 5:img.setImageResource(R.drawable.winner);
+        switch (score) {
+            case 5:
+                img.setImageResource(R.drawable.winner);
                 qHeader.setText(getResources().getString(R.string.winner));
                 break;
-            case 0: img.setImageResource(R.drawable.gameover);
+            case 0:
+                img.setImageResource(R.drawable.gameover);
                 qHeader.setText(getResources().getString(R.string.loser));
                 break;
             default:
@@ -228,28 +328,24 @@ public class MainAct extends AppCompatActivity {
                 qHeader.setText(getResources().getString(R.string.endgameText));
                 break;
         }
-
-
+        buttonView.addView(extraButton, 2, lp);
     }
 
-    public void validateAnswer (View v) {
+    public void validateAnswer(View v) {
         Button b = (Button) v;
         String ans = String.valueOf(b.getText());
         if (ans.equals(currentQuestion.getRightAnswer())) {
-            Toast.makeText(this, R.string.answer_correct,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.answer_correct, Toast.LENGTH_SHORT).show();
             score++;
             updateScore();
-        }
-        else {
-            Toast.makeText(this,R.string.answer_fault, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, R.string.answer_fault, Toast.LENGTH_SHORT).show();
         }
         qCount++;
         //check if all questions done
-        if(qCount==5)
-        {
+        if (qCount == 5) {
             endgame();
-        }
-        else {
+        } else {
             nextQuestion();
         }
     }
@@ -266,11 +362,11 @@ public class MainAct extends AppCompatActivity {
 
         //generate random order for right answers
         int random;
-        random = (int) (Math.random()*answers.size());
+        random = (int) (Math.random() * answers.size());
         a1Button.setText(answers.remove(random));
-        random = (int) (Math.random()*answers.size());
+        random = (int) (Math.random() * answers.size());
         a2Button.setText(answers.remove(random));
-        random = (int) (Math.random()*answers.size());
+        random = (int) (Math.random() * answers.size());
         a3Button.setText(answers.remove(random));
         a4Button.setText(answers.remove(0));
     }
@@ -280,11 +376,11 @@ public class MainAct extends AppCompatActivity {
     }
 
     private void selectQuestions(int amount) {
-        quizQuestionList = new ArrayList<Question>();
+        quizQuestionList = new ArrayList<>();
         Question q;
         int random;
-        for (int i=0; i < amount; i++) {
-            random = (int) (Math.random()*totalQuestionList.size());
+        for (int i = 0; i < amount; i++) {
+            random = (int) (Math.random() * totalQuestionList.size());
             q = totalQuestionList.remove(random);
             quizQuestionList.add(q);
         }
@@ -306,7 +402,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("Kucoin");
         rightAnswer = "Binance";
         imgSrc = R.drawable.binance;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 2 (BTC)
         answerList = new ArrayList<>();
@@ -317,7 +413,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("TRX");
         rightAnswer = "BTC";
         imgSrc = R.drawable.btc;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 3(ENJ)
         answerList = new ArrayList<>();
@@ -328,7 +424,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("WTC");
         rightAnswer = "ENJ";
         imgSrc = R.drawable.enj;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 4 (ETH)
         answerList = new ArrayList<>();
@@ -339,7 +435,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("ADX");
         rightAnswer = "ETH";
         imgSrc = R.drawable.eth;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 5 (ICX)
         answerList = new ArrayList<>();
@@ -350,7 +446,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("ICX");
         rightAnswer = "ICX";
         imgSrc = R.drawable.icx;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 6(IOTA)
         answerList = new ArrayList<>();
@@ -361,7 +457,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("XVG");
         rightAnswer = "IOTA";
         imgSrc = R.drawable.iota;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 7 (NEO)
         answerList = new ArrayList<>();
@@ -372,7 +468,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("NEO");
         rightAnswer = "NEO";
         imgSrc = R.drawable.neo;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 8 (OMG)
         answerList = new ArrayList<>();
@@ -383,7 +479,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("ICX");
         rightAnswer = "OMG";
         imgSrc = R.drawable.omg;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 9 (TRX)
         answerList = new ArrayList<>();
@@ -394,7 +490,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("BNB");
         rightAnswer = "TRX";
         imgSrc = R.drawable.trx;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
         //Question 10 (XRP)
         answerList = new ArrayList<>();
@@ -405,7 +501,7 @@ public class MainAct extends AppCompatActivity {
         answerList.add("XMR");
         rightAnswer = "XRP";
         imgSrc = R.drawable.xrp;
-        totalQuestionList.add(new Question(answerList,rightAnswer,imgSrc,question));
+        totalQuestionList.add(new Question(answerList, rightAnswer, imgSrc, question));
 
 
     }

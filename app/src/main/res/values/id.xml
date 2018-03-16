@@ -4,8 +4,14 @@
     <item type="id" name="q2Layout"/>
     <item type="id" name="q3Layout"/>
     <item type='id' name="submitButton"/>
-    <item type='id' name="againButton"/>
-    <item type='id' name="quitButton"/>
-    <item type='id' name="extraButton"/>
+    <item type='id' name="extraA1"/>
+    <item type='id' name="extraA2B1"/>
+    <item type='id' name="extraA2B2"/>
+    <item type='id' name="extraA2B3"/>
+    <item type='id' name="extraA2B4"/>
+    <item type='id' name="extraA3B1"/>
+    <item type='id' name="extraA3B2"/>
+    <item type='id' name="extraA3B3"/>
+    <item type='id' name="extraA3B4"/>
 
 </resources>

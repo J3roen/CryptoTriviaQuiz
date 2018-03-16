@@ -12,4 +12,11 @@
     <string name="extra_questions">Bonus Questions!</string>
     <string name="extra_button">Extra questions to meet requirements</string>
     <string name="submit_button">Submit answers</string>
+    <string name="extraQ1">Question 1: Johnny his dad has 3 sons. Ziggy, Zaggy and ... ?</string>
+    <string name="extraQ2">Question 2: Check the box labeled \' this one \'</string>
+    <string name="extra_thisOne">this one</string>
+    <string name="extra_notThis">not this one</string>
+    <string name="extraQ3">Question 3: Tick all the boxes</string>
+    <string name="extra_andThisOne">and this one</string>
+    <string name="answerHint">Enter answer here</string>
 </resources>
