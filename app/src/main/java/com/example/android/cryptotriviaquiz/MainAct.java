@@ -157,7 +157,7 @@ public class MainAct extends AppCompatActivity {
         scrollView.setLayoutParams(scrollParams);
         layout.addView(scrollView);
 
-        RelativeLayout buttonView = new RelativeLayout(this);
+        LinearLayout buttonView = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(padding,padding,padding,padding);
