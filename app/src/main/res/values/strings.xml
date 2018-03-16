@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Crypto Trivia Quiz</string>
+    <string name="coin_logo_question">What coin has this logo ?</string>
+    <string name="exchange_logo_question">What exchange uses this logo?</string>
+    <string name="answer_correct">Correct answer!</string>
+    <string name="answer_fault">Wrong answer!</string>
+    <string name="winner">Congratulations, you won!</string>
+    <string name="play_again">Play again</string>
+    <string name="loser">You lost, try again!</string>
+    <string name="endgameText">Thanks for playing!</string>
+    <string name="exit_app">Quit playing</string>
+    <string name="extra_questions">Bonus Questions!</string>
+    <string name="extra_button">Extra questions to meet requirements</string>
+    <string name="submit_button">Submit answers</string>
+</resources>

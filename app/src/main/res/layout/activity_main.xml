@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.example.android.cryptotriviaquiz.MainAct"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/qHeader"
+            android:text="qHeader"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/qImage"
+            android:scaleType="fitCenter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+        <LinearLayout
+            android:id="@+id/answerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:layout_weight="4"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:onClick="validateAnswer"
+                    android:id="@+id/a1Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:text="answer 1" />
+
+                <Button
+                    android:onClick="validateAnswer"
+                    android:id="@+id/a2Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:text="answer 2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:onClick="validateAnswer"
+                    android:id="@+id/a3Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:text="answer 3" />
+
+                <Button
+                    android:onClick="validateAnswer"
+                    android:id="@+id/a4Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorAccent"
+                    android:text="answer 4" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="scoreText"
+            android:textAlignment="center"
+            android:textSize="24sp">
+        </TextView>
+
+    </LinearLayout>

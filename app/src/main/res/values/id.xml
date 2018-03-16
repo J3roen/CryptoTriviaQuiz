@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="q1Layout"/>
+    <item type="id" name="q2Layout"/>
+    <item type="id" name="q3Layout"/>
+    <item type='id' name="submitButton"/>
+    <item type='id' name="againButton"/>
+    <item type='id' name="quitButton"/>
+    <item type='id' name="extraButton"/>
+
+</resources>
