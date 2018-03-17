@@ -29,8 +29,8 @@ public class MainAct extends AppCompatActivity {
     TextView scoreView;
     private ArrayList<Question> totalQuestionList;
     private ArrayList<Question> quizQuestionList;
-    private int score = 0;
-    private int qCount = 0;
+    private int score;
+    private int qCount;
     private Question currentQuestion;
 
     @Override
@@ -102,6 +102,7 @@ public class MainAct extends AppCompatActivity {
 
         //add TextView with question
         TextView q1 = new TextView(this);
+        q1.setId(R.id.extraQ1);
         q1.setTextSize(getResources().getDimension(R.dimen.questionSize));
         q1.setText(R.string.extraQ1);
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -128,6 +129,7 @@ public class MainAct extends AppCompatActivity {
 
         //add TextView with question
         TextView q2 = new TextView(this);
+        q2.setId(R.id.extraQ2);
         q2.setTextSize(getResources().getDimension(R.dimen.questionSize));
         q2.setText(R.string.extraQ2);
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -182,6 +184,7 @@ public class MainAct extends AppCompatActivity {
 
         //create TextView with 3rd question
         TextView q3 = new TextView(this);
+        q3.setId(R.id.extraQ3);
         q3.setText(getResources().getString(R.string.extraQ3));
         q3.setTextSize(getResources().getDimension(R.dimen.questionSize));
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -215,8 +218,28 @@ public class MainAct extends AppCompatActivity {
         answer.setTextSize(getResources().getDimension(R.dimen.answerSize));
         newLayout.addView(answer);
 
-        //add layout to masterLayout
+        //add layout to parentLayout
         parentLayout.addView(newLayout, lp);
+
+        //add button to restart app
+        Button restartButton = new Button(this);
+        restartButton.setText(getResources().getString(R.string.play_again));
+        restartButton.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                restartApp();
+            }
+        });
+        parentLayout.addView(restartButton, lp);
+
+        //add button to quit app
+        Button quitButton = new Button(this);
+        quitButton.setText(getResources().getString(R.string.exit_app));
+        quitButton.setOnClickListener( new Button.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        parentLayout.addView(quitButton, lp);
 
         //create Button to submit answers (added to masterLayout)
         Button submitButton = new Button(this);
@@ -234,16 +257,64 @@ public class MainAct extends AppCompatActivity {
 
         masterLayout.addView(submitButton, lp);
 
-        //#TODO add extra question data to views
-
-    }
-
-    private void checkButton(View v) {
-
     }
 
     private void submitAnswers() {
+        //Check Q1, right answer = Johnny
+        String rightAnswer1 = "johnny";
+        int extraScore = 0;
+        ArrayList<Integer> correctScores = new ArrayList<>();
+
+        EditText answer1 = findViewById(R.id.extraA1);
+        String answer = answer1.getText().toString().trim().toLowerCase();
+        TextView question;
+        question = findViewById(R.id.extraQ1);
+        if(answer.equals(rightAnswer1)) {
+            extraScore++;
+            correctScores.add(R.id.extraQ1);
+            question.setTextColor(getResources().getColor(R.color.correctAnswer));
+        } else
+        {
+            question.setTextColor(getResources().getColor(R.color.incorrectAnswer));
+        }
+
+        //Check Q2, right answer = radiobox 3
+        question = findViewById(R.id.extraQ2);
+        RadioButton answer2 = findViewById(R.id.extraA2B3);
+        if (answer2.isChecked()) {
+             extraScore++;
+             correctScores.add(R.id.extraQ2);
+             question.setTextColor(getResources().getColor(R.color.correctAnswer));
+        } else {
+            question.setTextColor(getResources().getColor(R.color.incorrectAnswer));
+        }
+
+        //check Q3, right answer = everything checked
+        question = findViewById(R.id.extraQ3);
+        CheckBox answer3b1;
+        CheckBox answer3b2;
+        CheckBox answer3b3;
+        CheckBox answer3b4;
+
+        answer3b1 = findViewById(R.id.extraA3B1);
+        answer3b2 = findViewById(R.id.extraA3B2);
+        answer3b3 = findViewById(R.id.extraA3B3);
+        answer3b4 = findViewById(R.id.extraA3B4);
+
+        if (answer3b1.isChecked() && answer3b2.isChecked() && answer3b3.isChecked() && answer3b4.isChecked()) {
+            extraScore++;
+            correctScores.add(R.id.extraQ3);
+            question.setTextColor(getResources().getColor(R.color.correctAnswer));
+        } else {
+            question.setTextColor(getResources().getColor(R.color.incorrectAnswer));
+        }
+        String toastText = getResources().getString(R.string.extraEndScore, extraScore);
+        Toast.makeText(this,toastText,Toast.LENGTH_LONG).show();
+
+
+
         //#TODO add code to check & submit answers
+
     }
 
     private void endgame() {
@@ -278,10 +349,7 @@ public class MainAct extends AppCompatActivity {
         againButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         againButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent i = getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                restartApp();
             }
         });
         buttonView.addView(againButton, 0, lp);
@@ -384,6 +452,13 @@ public class MainAct extends AppCompatActivity {
             q = totalQuestionList.remove(random);
             quizQuestionList.add(q);
         }
+    }
+
+    private void restartApp() {
+        Intent i = getBaseContext().getPackageManager()
+                .getLaunchIntentForPackage(getBaseContext().getPackageName());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 
     private void createQuestionList() {

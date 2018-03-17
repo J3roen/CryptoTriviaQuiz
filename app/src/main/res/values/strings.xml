@@ -5,7 +5,7 @@
     <string name="answer_correct">Correct answer!</string>
     <string name="answer_fault">Wrong answer!</string>
     <string name="winner">Congratulations, you won!</string>
-    <string name="play_again">Play again</string>
+    <string name="play_again">Restart app</string>
     <string name="loser">You lost, try again!</string>
     <string name="endgameText">Thanks for playing!</string>
     <string name="exit_app">Quit playing</string>
@@ -19,4 +19,5 @@
     <string name="extraQ3">Question 3: Tick all the boxes</string>
     <string name="extra_andThisOne">and this one</string>
     <string name="answerHint">Enter answer here</string>
+    <string name="extraEndScore">You have a score of %d out of 3 questions</string>
 </resources>
